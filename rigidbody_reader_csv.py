@@ -40,9 +40,9 @@ if len(bodies) > 0:
         bones = take.rigid_bodies[body]
         orientations.append(bones.rotations)
         bones_pos.append(bones.positions)
-        for pos,rot in zip(bones.positions, bones.rotations):
-             if pos is not None and rot is not None:
-                 xaxis, yaxis = quaternion_to_xaxis_yaxis(rot)
+        #for pos,rot in zip(bones.positions, bones.rotations):
+             #if pos is not None and rot is not None:
+                # xaxis, yaxis = quaternion_to_xaxis_yaxis(rot)
                 # plane = rs.PlaneFromFrame(pos, xaxis, yaxis)
 
                 # # create a visible plane, assuming units are in meters
@@ -98,12 +98,6 @@ black_colors = [[0, 0, 0] for i in range(len(markers))]
 keypoints_m = o3d.geometry.PointCloud()
 keypoints_m.points = o3d.utility.Vector3dVector(marker_pos[0])
 keypoints_m.colors= o3d.utility.Vector3dVector(black_colors)
-
-
-
-
-
-
 
 vis = o3d.visualization.Visualizer()
 control = vis.get_view_control()
