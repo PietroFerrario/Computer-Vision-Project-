@@ -10,11 +10,11 @@ import bvh_reader.bvh_file as bvh
 #filename = r"..\Material\360fps\animation.bvh"
 
 # Opening the 360p file 
-filename = r"..\Material\360fps\animation.bvh"
+filename = r"D:\school\Master\Computer vision\Computer Vision - Project\data\360fps\animation.bvh"
 
 
-body_edges = [[0,1],[1,2],[2,3],[3,4],[3,5],[5,6],[6,7],[7,8],[3,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],
-                [0,16],[16,17],[17,18],[18,20],[15,19]]
+#body_edges = [[0,1],[1,2],[2,3],[3,4],[3,5],[5,6],[6,7],[7,8],[3,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],
+#                [0,16],[16,17],[17,18],[18,20],[15,19]]
 
 animation, joint_names, frame_time = bvh.read_bvh(filename)
 
@@ -61,65 +61,68 @@ for frame_index, frame_data in enumerate(animation_pos):
         
 # Extracting the rotation informations 
 joint_rot = [[] for _ in range(len(joint_names))]
-for frame_index, frame_data in enumerate(animation_pos):
+for frame_index, frame_data in enumerate(animation_rot):
     #rint("Frame number", frame_index)
     #print("Frame data", frame_data[2])
     for joint_index, joint_data in enumerate(frame_data):
       x, y, z = joint_data
       joint_rot[joint_index].append([x, y, z])
      
-#print(joint_pos)
+
+print(joint_pos[0][0:5])
+print(joint_rot[0][0:5])
 # print(len(joint_pos))
-# joint_pos = np.moveaxis(joint_pos, 1, 0)
+joint_pos = np.moveaxis(joint_pos, 1, 0)
+joint_rot = np.moveaxis(joint_rot, 1, 0)
 # print(len(joint_pos))
 
 # Preparing for printing 
-# colors = [[1, 0, 0] for i in range(len(joint_names))]
-# keypoints = o3d.geometry.PointCloud()
-# keypoints.points = o3d.utility.Vector3dVector(joint_pos[0])
-# keypoints_center = keypoints.get_center()
-# keypoints.points = o3d.utility.Vector3dVector(joint_pos[0])
-# skeleton_joints = o3d.geometry.LineSet()
-# skeleton_joints.points = o3d.utility.Vector3dVector(joint_pos[0])
-# center_skel = skeleton_joints.get_center()
-# skeleton_joints.points = o3d.utility.Vector3dVector(joint_pos[0])
-# skeleton_joints.lines = o3d.utility.Vector2iVector(body_edges)
-# skeleton_joints.colors = o3d.utility.Vector3dVector(colors)
+colors = [[1, 0, 0] for i in range(len(joint_names))]
+keypoints = o3d.geometry.PointCloud()
+keypoints.points = o3d.utility.Vector3dVector(joint_pos[0])
+#keypoints_center = keypoints.get_center()
+keypoints.points = o3d.utility.Vector3dVector(joint_pos[0])
+skeleton_joints = o3d.geometry.LineSet()
+skeleton_joints.points = o3d.utility.Vector3dVector(joint_pos[0])
+center_skel = skeleton_joints.get_center()
+skeleton_joints.points = o3d.utility.Vector3dVector(joint_pos[0])
+skeleton_joints.lines = o3d.utility.Vector2iVector(edges)
+skeleton_joints.colors = o3d.utility.Vector3dVector(colors)
 
 
 
-# vis =o3d.visualization.Visualizer()
+vis =o3d.visualization.Visualizer()
 
-# vis.create_window(window_name = "StuffStuff")
+vis.create_window(window_name = "StuffStuff")
 
-# vis.add_geometry(skeleton_joints)
-# vis.add_geometry(keypoints)
+vis.add_geometry(skeleton_joints)
+vis.add_geometry(keypoints)
 
-# view_control = vis.get_view_control()
+view_control = vis.get_view_control()
 
-# #Scaling factor
-# view_control = vis.get_view_control()
-# view_control.scale(100)
+#Scaling factor
+view_control = vis.get_view_control()
+view_control.scale(100)
 
-# time.sleep(0)
-# for i in range(1,20000):
+time.sleep(0)
+for i in range(1,20000):
   
-#     new_joints = joint_pos[i]
+    new_joints = joint_pos[i]
     
-#     skeleton_joints.points = o3d.utility.Vector3dVector(new_joints)
-#     keypoints.points = o3d.utility.Vector3dVector(new_joints)
+    skeleton_joints.points = o3d.utility.Vector3dVector(new_joints)
+    keypoints.points = o3d.utility.Vector3dVector(new_joints)
     
-#     vis.update_geometry(skeleton_joints)
-#     vis.update_geometry(keypoints)
+    vis.update_geometry(skeleton_joints)
+    vis.update_geometry(keypoints)
     
-#     vis.update_renderer()
-#     vis.poll_events()
+    vis.update_renderer()
+    vis.poll_events()
 
-#     time.sleep(0)
+    time.sleep(0)
     
-#     if not vis.poll_events():
-#         break
+    if not vis.poll_events():
+        break
 
     
-# vis.run()
+vis.run()
 
